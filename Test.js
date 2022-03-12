@@ -866,17 +866,47 @@
 
 
 
+
+
+
+            e.addEventListener('touchstart', function (e) {
+                // e.preventDefault();
+                var touches = e.targetTouches;
+        
+                for (var i = 0; i < touches.length; i++) {
+                  if (i >= a.length) a.push(new Pointer());
+                  a[i].id = touches[i].identifier;
+                  a[i].down = !0;
+                  a[i].x = touches[i].pageX;
+                  a[i].y = touches[i].pageY;
+                  a[i].color = L();
+                }
+              });
+
+              window.addEventListener('touchmove', function (e) {
+                // e.preventDefault();
+                var touches = e.targetTouches;
+        
+                for (var i = 0; i < touches.length; i++) {
+                  var pointer = a[i];
+                  pointer.moved = pointer.down;
+                  pointer.dx = (touches[i].pageX - pointer.x) * 8.0;
+                  pointer.dy = (touches[i].pageY - pointer.y) * 8.0;
+                  pointer.x = touches[i].pageX;
+                  pointer.y = touches[i].pageY;
+                }
+              }, false);
+
+              window.addEventListener('touchend', function (e) {
+                var touches = e.changedTouches;
+        
+                for (var i = 0; i < touches.length; i++) {
+                  for (var j = 0; j < a.length; j++) {
+                    if (touches[i].identifier === a[j].id) a[j].down = !1;
+                  }
+                }
+              });
          
-
-
-         
-               
-
-
-
-
-
-
 
             window.addEventListener("keydown", function(e) {
                 "KeyP" === e.code && (R.paused = !R.paused),
